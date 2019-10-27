@@ -2,6 +2,7 @@ from mpl_toolkits.mplot3d import Axes3D, axes3d
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import os
 
 # 一维高斯分布求Y
 def one_dim_z(x, u, sigma):
@@ -132,14 +133,26 @@ def draw_data(data_path, save_name):
 
 if __name__ == '__main__':
     print('---project start---')
-    # 生成数据
-    generate_data()
-    generate_test_data()
+    # 生成存储结果的文件夹
+    path1 = './classfication_show'
+    path2 = './data_show'
+    path3 = './test_show'
+    path4 = './without_classfication_show'
+    all_path = [path1, path2, path3, path4]
+    for pa in all_path:
+        if not os.path.exists(pa):
+            os.makedirs(pa)
+        else:
+            print(pa, ' have existed!')
 
-    train_data_path = './shuffle_all_data.txt'
-    test_data_path = './shuffle_test_data.txt'
-    # 读取数据
-    # read_data(train_data_path)
-    # 绘制数据分布图
-    draw_data(train_data_path, save_name='train_data.jpg')
-    draw_data(test_data_path, save_name='test_data.jpg')
+    # 生成数据
+    # generate_data()
+    # generate_test_data()
+    #
+    # train_data_path = './shuffle_all_data.txt'
+    # test_data_path = './shuffle_test_data.txt'
+    # # 读取数据
+    # # read_data(train_data_path)
+    # # 绘制数据分布图
+    # draw_data(train_data_path, save_name='train_data.jpg')
+    # draw_data(test_data_path, save_name='test_data.jpg')
