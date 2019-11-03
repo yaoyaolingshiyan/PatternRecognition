@@ -21,13 +21,15 @@ def large_dim_z(x, u, sigma):
     return p
 
 def get_data(u, sigma, type):
-    num_sample = 1000
+    num_sample = 1100
     s = np.random.multivariate_normal(u, sigma, num_sample)
     z = []
     for x in s:
-        result = large_dim_z(x, u, sigma)
-        # [x1, x2, x3, z]
-        z.append([x[0], x[1], x[2], result[0][0], type])
+        # result = large_dim_z(x, u, sigma)
+        # [x1, x2, x3, z, type]
+        # z.append([x[0], x[1], x[2], result[0][0], type])
+        # [x1, x2, x3, type]
+        z.append([x[0], x[1], x[2], type])
     return z
 
 def generate_data():
@@ -44,23 +46,37 @@ def generate_data():
     u4 = np.asarray([0, 0.5, 1])
     sigma4 = np.asarray([[2, 0, 0], [0, 1, 0], [0, 0, 3]])
 
-    result = get_data(u1, sigma1, 0)
-    result.extend(get_data(u2, sigma2, 1))
-    result.extend(get_data(u3, sigma3, 2))
-    result.extend(get_data(u4, sigma4, 3))
+    result1 = get_data(u1, sigma1, 0)
+    result2 = (get_data(u2, sigma2, 1))
+    result3 = (get_data(u3, sigma3, 2))
+    result4 = (get_data(u4, sigma4, 3))
 
-    with open("./data.txt", "w") as f1:
-        for i in range(len(result)):
-            f1.write(str(result[i])+'\n')
+    train_data = []
+    train_data.extend(result1[0:1000])
+    train_data.extend(result2[0:1000])
+    train_data.extend(result3[0:1000])
+    train_data.extend(result4[0:1000])
 
-    random.shuffle(result)
+    test_data = []
+    test_data.extend(result1[1000:])
+    test_data.extend(result2[1000:])
+    test_data.extend(result3[1000:])
+    test_data.extend(result4[1000:])
 
-    with open("./shuffle_data.txt", "w") as f2:
-        for i in range(len(result)):
-            f2.write(str(result[i])+'\n')
+    random.shuffle(train_data)
+    random.shuffle(test_data)
+
+    with open("./train_data/train_shuffle_data.txt", "w") as f1:
+        for i in range(len(train_data)):
+            f1.write(str(train_data[i])+'\n')
+
+
+    with open("./test_data/test_shuffle_data.txt", "w") as f2:
+        for i in range(len(test_data)):
+            f2.write(str(test_data[i])+'\n')
 
 def read_data():
-    data_path = './shuffle_data.txt'
+    data_path = './train_data/train_shuffle_data.txt'
     shuffle_data = []
     with open(data_path, "r") as f:
         data = f.readlines()
@@ -68,6 +84,8 @@ def read_data():
         shuffle_data.append(eval(data[i]))
     print(shuffle_data)
     print(len(shuffle_data))
+
+
 if __name__ == '__main__':
     print('hello')
     # 生成数据

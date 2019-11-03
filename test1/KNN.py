@@ -37,7 +37,7 @@ def kNN(dataSet, labels, testData, k):
 if __name__ == "__main__":
 
     new_data = []
-    with open("./samples_shuffle.txt", "r") as f:
+    with open("./shuffle_all_data.txt", "r") as f:
         data = f.readlines()
     for i in range(0, len(data)):
         new_data.append(eval(data[i]))
